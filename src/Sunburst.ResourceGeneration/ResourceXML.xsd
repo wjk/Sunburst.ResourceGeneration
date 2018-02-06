@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://xml.sunsol.me/Resource-Generation/v1"
+           targetNamespace="http://xml.sunsol.me/Resource-Generation/v1">
+    <xs:element name="Resources">
+        <xs:complexType>
+            <xs:choice minOccurs="1" maxOccurs="unbounded">
+                <xs:element ref="Resource" />
+            </xs:choice>
+
+            <xs:attribute name="ClassName" type="xs:string" use="optional" />
+            <xs:attribute name="Namespace" type="xs:string" use="optional" />
+        </xs:complexType>
+
+        <xs:unique name="ResourceName">
+            <xs:selector xpath="Resource" />
+            <xs:field xpath="@Name" />
+        </xs:unique>
+    </xs:element>
+
+    <xs:element name="Resource">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:choice minOccurs="1" maxOccurs="unbounded">
+                    <xs:element ref="Text" />
+                    <xs:element ref="Data" />
+                </xs:choice>
+                <xs:choice minOccurs="0" maxOccurs="1">
+                    <xs:element ref="Comment" />
+                </xs:choice>
+            </xs:sequence>
+
+            <xs:attribute name="Name" type="xs:string" use="required" />
+            <xs:attribute name="CustomType" type="xs:string" use="optional" />
+        </xs:complexType>
+
+        <xs:unique name="Culture">
+            <xs:selector xpath="Text | Data" />
+            <xs:field xpath="@Culture" />
+        </xs:unique>
+    </xs:element>
+
+    <xs:element name="Text">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:restriction base="xs:string">
+                    <xs:minLength value="0" />
+                </xs:restriction>
+            </xs:simpleContent>
+
+            <xs:attribute name="Culture" type="xs:string" use="optional" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Data">
+        <xs:complexType>
+            <xs:sequence minOccurs="0" maxOccurs="0" />
+
+            <xs:attribute name="SourceFile" type="xs:string" use="required" />
+            <xs:attribute name="Culture" type="xs:string" use="optional" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="Comment" type="xs:string" />
+</xs:schema>
