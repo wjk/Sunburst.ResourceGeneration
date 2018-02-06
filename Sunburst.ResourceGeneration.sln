@@ -31,4 +31,12 @@ Global
 		{DC56A3F5-5256-42C9-BA61-B44466F9E027}.Release|x86.ActiveCfg = Release|Any CPU
 		{DC56A3F5-5256-42C9-BA61-B44466F9E027}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.TabWidth = 2
+		$1.TabsToSpaces = True
+		$1.IndentWidth = 2
+		$1.scope = application/x-csproject
+	EndGlobalSection
 EndGlobal
