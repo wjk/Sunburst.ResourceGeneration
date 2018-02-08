@@ -1,11 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <BuildOutputTargetFolder>build</BuildOutputTargetFolder>
+    <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Build.Framework" Version="15.5.180" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.5.180" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="2.6.1" />
+    <Content Include="ResourceGeneration.targets" PackagePath="build" />
   </ItemGroup>
 </Project>
