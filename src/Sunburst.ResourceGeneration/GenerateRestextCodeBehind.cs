@@ -27,17 +27,17 @@ namespace Sunburst.ResourceGeneration
             StringBuilder comment = new StringBuilder();
 
             bool inComment = false;
-            int ch = reader.Read();
+            int ch = 0;
             while (ch != -1)
             {
+                ch = reader.Read();
                 if (ch == '\r' || ch == '\n')
                 {
                     inComment = false;
-                    ch = reader.Read();
                     continue;
                 }
 
-                if (ch == '#' || ch == ';')
+                if ((ch == '#' || ch == ';') && !inComment)
                 {
                     inComment = true;
                     comment.Append(' ');
@@ -45,7 +45,6 @@ namespace Sunburst.ResourceGeneration
 
                 if (inComment && comment.Length == 0 && (ch == ' ' || ch == '\t'))
                 {
-                    ch = reader.Read();
                     continue;
                 }
 
@@ -58,7 +57,6 @@ namespace Sunburst.ResourceGeneration
                     if (ch == '=')
                     {
                         reader.ReadLine();
-                        ch = reader.Read();
 
                         entries.Add((name.ToString().Trim(), comment.ToString().Trim()));
                         name = new StringBuilder();
