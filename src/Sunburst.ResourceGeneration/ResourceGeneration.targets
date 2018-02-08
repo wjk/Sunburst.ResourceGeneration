@@ -2,6 +2,7 @@
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <AutoGenerateRestextCodeBehindFiles Condition="'$(AutoGenerateRestextCodeBehindFiles)' == ''">true</AutoGenerateRestextCodeBehindFiles>
+    <ResourceGenerationTasksAssembly>$(MSBuildThisFileDirectory)/netstandard2.0/Sunburst.ResourceGeneration.dll</ResourceGenerationTasksAssembly>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(EnableDefaultItems)' == 'true' and '$(EnableDefaultRestextItems)' == 'true'">
@@ -12,8 +13,8 @@
     </EmbeddedResource>
   </ItemGroup>
   
-  <UsingTask TaskName="ComputeRestextCodeBehindFilePath" AssemblyFile="$(MicrosoftNETBuildTasksAssembly)" />
-  <UsingTask TaskName="GenerateRestextCodeBehindFile" AssemblyFile="$(MicrosoftNETBuildTasksAssembly)" />
+  <UsingTask TaskName="ComputeRestextCodeBehindFilePath" AssemblyFile="$(ResourceGenerationTasksAssembly)" />
+  <UsingTask TaskName="GenerateRestextCodeBehindFile" AssemblyFile="$(ResourceGenerationTasksAssembly)" />
 
   <Target Name="_ComputeRestextCodeBehindFilePaths">
     <ComputeRestextCodeBehindFilePath EmbeddedResources="@(EmbeddedResource)"
