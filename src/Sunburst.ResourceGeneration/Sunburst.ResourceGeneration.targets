@@ -27,6 +27,7 @@
   </Target>
 
   <Target Name="GenerateRestextCodeBehind"
+          Condition="'$(DesignTimeBuild)' == ''"
           DependsOnTargets="_ComputeRestextCodeBehindFilePaths;CreateManifestResourceNames"
           Inputs="@(_RestextFileToGenerateCodeBehind)"
           Outputs="@(_RestextFileToGenerateCodeBehind -> '%(CodeBehindFile)')">
@@ -35,10 +36,16 @@
     </GenerateRestextCodeBehindFile>
   </Target>
 
-  <Target Name="CompileRestextCodeBehind" DependsOnTargets="_ComputeRestextCodeBehindFilePaths;GenerateRestextCodeBehind">
+  <Target Name="CompileRestextCodeBehind" BeforeTargets="BeforeCompile"
+          Condition="'$(_AddedRestextCodeBehindsToCompile)' == ''"
+          DependsOnTargets="_ComputeRestextCodeBehindFilePaths;GenerateRestextCodeBehind">
     <ItemGroup>
       <Compile Include="@(_RestextFileToGenerateCodeBehind -> '%(CodeBehindFile)')" />
     </ItemGroup>
+
+    <PropertyGroup>
+      <_AddedRestextCodeBehindsToCompile>true</_AddedRestextCodeBehindsToCompile>
+    </PropertyGroup>
   </Target>
 
   <PropertyGroup>
