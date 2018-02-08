@@ -8,6 +8,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Build.Framework" Version="15.5.180" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.5.180" />
+    <PackageReference Include="System.CodeDom" Version="4.5.0-*" />
     <Content Include="ResourceGeneration.targets" PackagePath="build" />
   </ItemGroup>
 </Project>
