@@ -13,7 +13,7 @@ namespace Sunburst.ResourceGeneration
     public class GenerateRestextCodeBehindFile : TaskBase
     {
         [Required]
-        public ITaskItem[] ResxFiles { get; set; }
+        public ITaskItem[] RestextFiles { get; set; }
 
         [Required]
         public string Language { get; set; }
@@ -83,7 +83,7 @@ namespace Sunburst.ResourceGeneration
 
             List<ITaskItem> outputs = new List<ITaskItem>();
 
-            foreach (ITaskItem item in ResxFiles)
+            foreach (ITaskItem item in RestextFiles)
             {
                 string codeBehindPath = item.GetMetadata("CodeBehindFile");
                 if (string.IsNullOrEmpty(codeBehindPath))
