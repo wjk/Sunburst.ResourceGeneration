@@ -18,9 +18,9 @@
 
   <Target Name="_ComputeRestextCodeBehindFilePaths">
     <ComputeRestextCodeBehindFilePath EmbeddedResources="@(EmbeddedResource)"
-                                   IntermediateOutputPath="$(IntermediateOutputPath)"
-                                   Language="$(Language)"
-                                   AutoGenerateByDefault="$(AutoGenerateRestextCodeBehindFiles)">
+                                      IntermediateOutputPath="$(IntermediateOutputPath)"
+                                      Language="$(Language)"
+                                      AutoGenerateByDefault="$(AutoGenerateRestextCodeBehindFiles)">
       <Output TaskParameter="RestextFilesWithCodeBehindPath" ItemName="_RestextFileToGenerateCodeBehind" />
     </ComputeRestextCodeBehindFilePath>
   </Target>
@@ -29,8 +29,7 @@
           DependsOnTargets="_ComputeRestextCodeBehindFilePaths"
           Inputs="@(_RestextFileToGenerateCodeBehind)"
           Outputs="@(_RestextFileToGenerateCodeBehind -> '%(CodeBehindFile)')">
-    <GenerateRestextCodeBehindFile RestextFiles="@(_RestextFileToGenerateCodeBehind)"
-                                Language="$(Language)">
+    <GenerateRestextCodeBehindFile RestextFiles="@(_RestextFileToGenerateCodeBehind)" Language="$(Language)">
       <Output TaskParameter="Compile" ItemName="Compile" />
       <Output TaskParameter="Compile" ItemName="FileWrites" />
     </GenerateRestextCodeBehindFile>
