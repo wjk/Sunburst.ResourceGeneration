@@ -1,0 +1,45 @@
+<Project>
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <AutoGenerateRestextCodeBehindFiles Condition="'$(AutoGenerateRestextCodeBehindFiles)' == ''">true</AutoGenerateRestextCodeBehindFiles>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(EnableDefaultItems)' == 'true' and '$(EnableDefaultRestextItems)' == 'true'">
+    <None Remove="**/*.restext" Condition="'$(EnableDefaultNoneItems)' == 'true'" />
+    <EmbeddedResource Include="**/*.restext" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)">
+      <Type>Resx</Type>
+      <Generator>MSBuild:GenerateRestextCodeBehind</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  
+  <UsingTask TaskName="ComputeRestextCodeBehindFilePath" AssemblyFile="$(MicrosoftNETBuildTasksAssembly)" />
+  <UsingTask TaskName="GenerateRestextCodeBehindFile" AssemblyFile="$(MicrosoftNETBuildTasksAssembly)" />
+
+  <Target Name="_ComputeRestextCodeBehindFilePaths">
+    <ComputeRestextCodeBehindFilePath EmbeddedResources="@(EmbeddedResource)"
+                                   IntermediateOutputPath="$(IntermediateOutputPath)"
+                                   Language="$(Language)"
+                                   AutoGenerateByDefault="$(AutoGenerateRestextCodeBehindFiles)">
+      <Output TaskParameter="RestextFilesWithCodeBehindPath" ItemName="_RestextFileToGenerateCodeBehind" />
+    </ComputeRestextCodeBehindFilePath>
+  </Target>
+
+  <Target Name="GenerateRestextCodeBehind"
+          DependsOnTargets="_ComputeRestextCodeBehindFilePaths"
+          Inputs="@(_RestextFileToGenerateCodeBehind)"
+          Outputs="@(_RestextFileToGenerateCodeBehind -> '%(CodeBehindFile)')"
+          BeforeTargets="Compile">
+    <GenerateRestextCodeBehindFile RestextFiles="@(_RestextFileToGenerateCodeBehind)"
+                                Language="$(Language)">
+      <Output TaskParameter="Compile" ItemName="Compile" />
+      <Output TaskParameter="Compile" ItemName="FileWrites" />
+    </GenerateRestextCodeBehindFile>
+  </Target>
+
+  <PropertyGroup>
+    <CompileDependsOn>
+      GenerateRestextCodeBehind;
+      $(CompileDependsOn)
+    </CompileDependsOn>
+  </PropertyGroup>
+</Project>
