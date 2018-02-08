@@ -1,6 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
@@ -52,6 +53,29 @@ namespace Sunburst.ResourceGeneration
                     // and do not generate a code-behind for it. (If we did, we would get double-definition errors in the
                     // generated code-behind.)
                     continue;
+
+                string[] fileNameParts = resxFile.GetMetadata("FileName").Split('.');
+                if (fileNameParts.Length > 1)
+                {
+                    string languageName = fileNameParts.Last();
+                    bool isValidCulture;
+
+                    try
+                    {
+                        CultureInfo culture = new CultureInfo(languageName);
+                        isValidCulture = true;
+                    }
+                    catch (CultureNotFoundException)
+                    {
+                        isValidCulture = false;
+                    }
+
+                    if (isValidCulture)
+                        // Don't generate code-behinds for resource files with an explicit culture set.
+                        // We assume there is a culture-neutral file present, and that a code-behind will
+                        // be generated for it instead.
+                        continue;
+                }
 
                 string generateCodeBehindString = resxFile.GetMetadata("AutoGenerateCodeBehind");
                 bool generateCodeBehind = AutoGenerateByDefault;
