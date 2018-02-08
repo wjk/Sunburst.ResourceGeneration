@@ -21,7 +21,7 @@ namespace Sunburst.ResourceGeneration
         public bool AutoGenerateByDefault { get; set; }
 
         [Output]
-        public ITaskItem[] ResxFilesWithCodeBehindPath { get; set; }
+        public ITaskItem[] RestextFilesWithCodeBehindPath { get; set; }
 
         protected override void ExecuteCore()
         {
@@ -74,7 +74,7 @@ namespace Sunburst.ResourceGeneration
                 processedResxFiles.Add(resxCopy);
             }
 
-            ResxFilesWithCodeBehindPath = processedResxFiles.ToArray();
+            RestextFilesWithCodeBehindPath = processedResxFiles.ToArray();
         }
     }
 }
