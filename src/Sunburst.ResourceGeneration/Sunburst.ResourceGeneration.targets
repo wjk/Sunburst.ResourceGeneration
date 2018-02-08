@@ -17,7 +17,7 @@
   <UsingTask TaskName="ComputeRestextCodeBehindFilePath" AssemblyFile="$(ResourceGenerationTasksAssembly)" />
   <UsingTask TaskName="GenerateRestextCodeBehindFile" AssemblyFile="$(ResourceGenerationTasksAssembly)" />
 
-  <Target Name="_ComputeRestextCodeBehindFilePaths">
+  <Target Name="_ComputeRestextCodeBehindFilePaths" DependsOnTargets="CreateManifestResourceNames">
     <ComputeRestextCodeBehindFilePath EmbeddedResources="@(EmbeddedResource)"
                                       IntermediateOutputPath="$(IntermediateOutputPath)"
                                       Language="$(Language)"
@@ -27,18 +27,23 @@
   </Target>
 
   <Target Name="GenerateRestextCodeBehind"
-          DependsOnTargets="_ComputeRestextCodeBehindFilePaths"
+          DependsOnTargets="_ComputeRestextCodeBehindFilePaths;CreateManifestResourceNames"
           Inputs="@(_RestextFileToGenerateCodeBehind)"
           Outputs="@(_RestextFileToGenerateCodeBehind -> '%(CodeBehindFile)')">
     <GenerateRestextCodeBehindFile RestextFiles="@(_RestextFileToGenerateCodeBehind)" Language="$(Language)">
-      <Output TaskParameter="Compile" ItemName="Compile" />
       <Output TaskParameter="Compile" ItemName="FileWrites" />
     </GenerateRestextCodeBehindFile>
   </Target>
 
+  <Target Name="CompileRestextCodeBehind" DependsOnTargets="_ComputeRestextCodeBehindFilePaths;GenerateRestextCodeBehind">
+    <ItemGroup>
+      <Compile Include="@(_RestextFileToGenerateCodeBehind -> '%(CodeBehindFile)')" />
+    </ItemGroup>
+  </Target>
+
   <PropertyGroup>
     <CompileDependsOn>
-      GenerateRestextCodeBehind;
+      CompileRestextCodeBehind;
       $(CompileDependsOn)
     </CompileDependsOn>
   </PropertyGroup>
