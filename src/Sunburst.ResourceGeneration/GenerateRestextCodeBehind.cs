@@ -41,10 +41,6 @@ namespace Sunburst.ResourceGeneration
                 {
                     inComment = true;
                     comment.Append(' ');
-                }
-
-                if (inComment && comment.Length == 0 && (ch == ' ' || ch == '\t'))
-                {
                     continue;
                 }
 
