@@ -10,7 +10,7 @@
     <None Remove="**/*.restext" Condition="'$(EnableDefaultNoneItems)' == 'true'" />
     <EmbeddedResource Include="**/*.restext" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)">
       <Type>Resx</Type>
-      <Generator>MSBuild:GenerateRestextCodeBehind</Generator>
+      <Generator>MSBuild:CompileRestextCodeBehind</Generator>
     </EmbeddedResource>
   </ItemGroup>
   
