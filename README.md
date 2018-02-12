@@ -36,7 +36,7 @@ As the above example shows, you can use or omit spaces around the equals sign.
 Furthermore, any comments (which can be delimited with either `;` or `#`) will
 be emitted as doc comments for the next key-value line found. Note that blank
 lines are ignored, which has the side-effect of merging any top-of-file
-comments into the doc comment for hte first key-value line in the file.
+comments into the doc comment for the first key-value line in the file.
 
 ## License
 
