@@ -5,6 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Sunburst.ResourceGeneration" Version="1.0.0" PrivateAssets="all" />
+    <PackageReference Include="Sunburst.ResourceGeneration" Version="1.0.1" PrivateAssets="all" />
   </ItemGroup>
 </Project>
