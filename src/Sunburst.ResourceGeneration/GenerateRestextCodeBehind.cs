@@ -161,7 +161,6 @@ namespace Sunburst.ResourceGeneration
             builder.AppendLine($"{classIndent}{visibility} static class {className}");
             builder.AppendLine($"{classIndent}{{");
 
-            builder.AppendLine($"{memberIndent}{visibility} static global::System.Globalization.CultureInfo Culture {{ get; set; }}");
             builder.AppendLine($"{memberIndent}{visibility} static global::System.Resources.ResourceManager ResourceManager {{ get; }} = new global::System.Resources.ResourceManager(\"{resourceName}\", typeof({className}).GetTypeInfo().Assembly);");
             builder.AppendLine();
 
@@ -181,7 +180,7 @@ namespace Sunburst.ResourceGeneration
                 }
 
                 string identifier = Utilities.CreateValidCSharpIdentifier(name);
-                builder.AppendLine($"{memberIndent}{visibility} static string {identifier} => ResourceManager.GetString(\"{name}\", Culture);");
+                builder.AppendLine($"{memberIndent}{visibility} static string {identifier} => ResourceManager.GetString(\"{name}\", global::System.Globalization.CultureInfo.CurrentUICulture);");
             }
 
             builder.AppendLine($"{classIndent}}}");
@@ -227,7 +226,6 @@ namespace Sunburst.ResourceGeneration
             builder.AppendLine($"{memberIndent}End Sub");
             builder.AppendLine();
 
-            builder.AppendLine($"{memberIndent}{visibility} Shared Property Culture As Global.System.Globalization.CultureInfo");
             builder.AppendLine($"{memberIndent}{visibility} Shared ReadOnly Property ResourceManager As New Global.System.Resources.ResourceManager ResourceManager(\"{resourceName}\", GetType({className}).GetTypeInfo().Assembly);");
             builder.AppendLine();
 
@@ -249,7 +247,7 @@ namespace Sunburst.ResourceGeneration
                 string identifier = Utilities.CreateValidVisualBasicIdentifier(name);
                 builder.AppendLine($"{memberIndent}{visibility} Shared ReadOnly Property {identifier} As String");
                 builder.AppendLine($"{memberIndent}    Get");
-                builder.AppendLine($"{memberIndent}        Return ResourceManager.GetString(\"{name}\", Culture)");
+                builder.AppendLine($"{memberIndent}        Return ResourceManager.GetString(\"{name}\", Global.System.Globalization.CultureInfo.CurrentUICulture)");
                 builder.AppendLine($"{memberIndent}    End Get");
                 builder.AppendLine($"{memberIndent}End Property");
                 builder.AppendLine();
