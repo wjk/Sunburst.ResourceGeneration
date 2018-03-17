@@ -36,22 +36,17 @@
     </GenerateRestextCodeBehindFile>
   </Target>
 
-  <Target Name="CompileRestextCodeBehind" BeforeTargets="BeforeCompile"
-          Condition="'$(_AddedRestextCodeBehindsToCompile)' == ''"
+  <Target Name="CompileRestextCodeBehind"
           DependsOnTargets="_ComputeRestextCodeBehindFilePaths;GenerateRestextCodeBehind">
     <ItemGroup>
       <Compile Include="@(_RestextFileToGenerateCodeBehind -> '%(CodeBehindFile)')" />
     </ItemGroup>
-
-    <PropertyGroup>
-      <_AddedRestextCodeBehindsToCompile>true</_AddedRestextCodeBehindsToCompile>
-    </PropertyGroup>
   </Target>
 
   <PropertyGroup>
-    <CompileDependsOn>
+    <CoreCompileDependsOn>
       CompileRestextCodeBehind;
-      $(CompileDependsOn)
-    </CompileDependsOn>
+      $(CoreCompileDependsOn)
+    </CoreCompileDependsOn>
   </PropertyGroup>
 </Project>
