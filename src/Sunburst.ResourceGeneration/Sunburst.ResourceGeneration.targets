@@ -4,6 +4,7 @@
     <AutoGenerateRestextCodeBehindFiles Condition="'$(AutoGenerateRestextCodeBehindFiles)' == ''">true</AutoGenerateRestextCodeBehindFiles>
     <ResourceGenerationTasksAssembly>$(MSBuildThisFileDirectory)/netstandard2.0/Sunburst.ResourceGeneration.dll</ResourceGenerationTasksAssembly>
     <EnableDefaultRestextItems Condition="'$(EnableDefaultRestextItems)' == ''">true</EnableDefaultRestextItems>
+    <RestextCodeBehindVisibility Condition="'$(RestextCodeBehindVisibility)' == ''">Internal</RestextCodeBehindVisibility>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(EnableDefaultItems)' == 'true' and '$(EnableDefaultRestextItems)' == 'true'">
@@ -13,7 +14,7 @@
       <Generator>MSBuild:CompileRestextCodeBehind</Generator>
     </EmbeddedResource>
   </ItemGroup>
-  
+
   <UsingTask TaskName="ComputeRestextCodeBehindFilePath" AssemblyFile="$(ResourceGenerationTasksAssembly)" />
   <UsingTask TaskName="GenerateRestextCodeBehindFile" AssemblyFile="$(ResourceGenerationTasksAssembly)" />
 
@@ -31,7 +32,7 @@
           DependsOnTargets="_ComputeRestextCodeBehindFilePaths;CreateManifestResourceNames"
           Inputs="@(_RestextFileToGenerateCodeBehind)"
           Outputs="@(_RestextFileToGenerateCodeBehind -> '%(CodeBehindFile)')">
-    <GenerateRestextCodeBehindFile RestextFiles="@(_RestextFileToGenerateCodeBehind)" Language="$(Language)">
+    <GenerateRestextCodeBehindFile RestextFiles="@(_RestextFileToGenerateCodeBehind)" Language="$(Language)" Visibility="$(RestextCodeBehindVisibility)">
       <Output TaskParameter="Compile" ItemName="FileWrites" />
     </GenerateRestextCodeBehindFile>
   </Target>
