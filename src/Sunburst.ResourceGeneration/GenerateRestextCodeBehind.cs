@@ -153,7 +153,10 @@ namespace Sunburst.ResourceGeneration
             string memberIndent = classIndent + "    ";
 
             if (namespaceName != null)
-                builder.AppendLine($"namespace {namespaceName} {{");
+            {
+                builder.AppendLine($"namespace {namespaceName}");
+                builder.AppendLine("{");
+            }
 
             builder.AppendLine($"{classIndent}{visibility} static class {className}");
             builder.AppendLine($"{classIndent}{{");
