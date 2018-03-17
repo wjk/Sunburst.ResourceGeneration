@@ -8,6 +8,8 @@ namespace ResGenTest.NETCore
         static void Main(string[] args)
         {
             Console.WriteLine(Sample.SampleKey);
+            System.Globalization.CultureInfo.CurrentUICulture = new System.Globalization.CultureInfo("de-DE");
+            Console.WriteLine(Sample.SampleKey);
         }
     }
 }

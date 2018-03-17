@@ -2,9 +2,10 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <OutputType>Exe</OutputType>
+    <RestextCodeBehindVisibility>Public</RestextCodeBehindVisibility>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Sunburst.ResourceGeneration" Version="1.0.1" PrivateAssets="all" />
+    <PackageReference Include="Sunburst.ResourceGeneration" Version="2.0.0" PrivateAssets="all" />
   </ItemGroup>
 </Project>
