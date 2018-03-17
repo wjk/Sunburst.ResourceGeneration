@@ -11,7 +11,7 @@
     <PackageLicenseUrl>https://github.com/SunburstApps/ResourceGeneration/blob/master/LICENSE.md</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/SunburstApps/ResourceGeneration</PackageProjectUrl>
     <PackageTags>resource;restext;code-generation</PackageTags>
-    <Version>1.0.1</Version>
+    <Version>2.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
