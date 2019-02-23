@@ -10,8 +10,8 @@
     <EmbeddedResource Include="@(Restext)">
       <Type>Resx</Type>
       <Generator>MSBuild:GenerateRestextCodeBehind</Generator>
-      <GenerateCodeBehind Condition="'%(EmbeddedResource.GenerateCodeBehind)' != ''">%(EmbeddedResource.GenerateCodeBehind)</GenerateCodeBehind>
-      <GenerateCodeBehind Condition="'%(EmbeddedResource.GenerateCodeBehind)' == ''">false</GenerateCodeBehind>
+      <GenerateCodeBehind Condition="'%(Restext.GenerateCodeBehind)' != ''">%(Restext.GenerateCodeBehind)</GenerateCodeBehind>
+      <GenerateCodeBehind Condition="'%(Restext.GenerateCodeBehind)' == ''">false</GenerateCodeBehind>
     </EmbeddedResource>
     <None Remove="@(Restext)" />
   </ItemGroup>
