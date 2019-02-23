@@ -11,6 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResGenTest.NETCore", "test\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sunburst.ResourceGeneration.ResxFormat", "src\Sunburst.ResourceGeneration.ResxFormat\Sunburst.ResourceGeneration.ResxFormat.csproj", "{8A957CB7-F81A-49A3-B4AD-12D4CDCEFF74}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{4053FC6B-2BF4-4243-9C53-FB9291A44A6D}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
