@@ -5,15 +5,15 @@
     <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
     <PackProjectReferences>true</PackProjectReferences>
 
-    <AssemblyTitle>Restext Automatic Resource Generator</AssemblyTitle>
+    <AssemblyTitle>Resource Strongly-Typed Code Behind Generator</AssemblyTitle>
     <Title>$(AssemblyTitle)</Title>
 
     <Authors>William Kent</Authors>
-    <Description>Provides compilation of and automatic generation of code-behind files for *.restext resource files (but not *.resx).</Description>
-    <Copyright>Copyright © 2018 William Kent. Licensed under the MIT License</Copyright>
+    <Description>Provides compilation of and automatic generation of code-behind files for *.restext and *.resx resource files.</Description>
+    <Copyright>Copyright © 2018-2019 William Kent. Licensed under the MIT License</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/SunburstApps/ResourceGeneration</PackageProjectUrl>
-    <PackageTags>resource;restext;code-generation</PackageTags>
+    <PackageTags>resource;restext;resx;code-generation</PackageTags>
     <Version>$(AssemblyVersion)</Version>
   </PropertyGroup>
 
