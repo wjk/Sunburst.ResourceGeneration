@@ -22,10 +22,6 @@
         <PackagePath>%(PackagePath)</PackagePath>
       </Content>
     </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Update="@(ProjectReference)" PrivateAssets="all" Condition="'%(ProjectReference.Pack)' == 'true'" />
-    </ItemGroup>
   </Target>
 
   <Target Name="_GetProjectReferencePackFiles" Returns="@(_ProjectReferencePackFile)" DependsOnTargets="Build">
@@ -42,4 +38,10 @@
       </_ProjectReferencePackFile>
     </ItemGroup>
   </Target>
+
+  <ItemGroup>
+    <ProjectReference Update="@(ProjectReference)">
+      <PrivateAssets Condition="'%(ProjectReference.Pack)' == 'true'">all</PrivateAssets>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
