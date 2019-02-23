@@ -1,29 +1,8 @@
 <Project>
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
-    <AutoGenerateRestextCodeBehindFiles Condition="'$(AutoGenerateRestextCodeBehindFiles)' == ''">true</AutoGenerateRestextCodeBehindFiles>
     <ResourceGenerationTasksAssembly>$(MSBuildThisFileDirectory)/netstandard2.0/Sunburst.ResourceGeneration.dll</ResourceGenerationTasksAssembly>
-    <EnableDefaultRestextItems Condition="'$(EnableDefaultRestextItems)' == ''">true</EnableDefaultRestextItems>
-    <RestextCodeBehindVisibility Condition="'$(RestextCodeBehindVisibility)' == ''">Internal</RestextCodeBehindVisibility>
   </PropertyGroup>
-
-  <ItemGroup>
-    <AvailableItemName Include="Restext" />
-
-    <EmbeddedResource Include="@(Restext)">
-      <Type>Resx</Type>
-      <Generator>MSBuild:GenerateRestextCodeBehind</Generator>
-    </EmbeddedResource>
-    <None Remove="@(Restext)" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(EnableDefaultItems)' == 'true' and '$(EnableDefaultRestextItems)' == 'true'">
-    <None Remove="**/*.restext" Condition="'$(EnableDefaultNoneItems)' == 'true'" />
-    <EmbeddedResource Include="**/*.restext" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)">
-      <Type>Resx</Type>
-      <Generator>MSBuild:GenerateRestextCodeBehind</Generator>
-    </EmbeddedResource>
-  </ItemGroup>
 
   <UsingTask TaskName="GenerateRestextCodeBehindFile" AssemblyFile="$(ResourceGenerationTasksAssembly)" />
 
@@ -31,7 +10,7 @@
     <Error Message="DefaultLanguageSourceExtension not defined" Condition="'$(DefaultLanguageSourceExtension)' == ''" />
 
     <ItemGroup>
-      <EmbeddedResource Update="@(EmbeddedResource)" Condition="'%(Extension)' == '.restext' and '%(GenerateCodeBehind)' == 'true'">
+      <EmbeddedResource Update="@(EmbeddedResource)" Condition="'%(Extension)' == '.restext' and '%(EmbeddedResource.GenerateCodeBehind)' == 'true'">
         <CodeBehindFile>$(IntermediateOutputPath)%(EmbeddedResource.ManifestResourceName)$(DefaultLanguageSourceExtension)</CodeBehindFile>
         <ClassName Condition="'%(EmbeddedResource.ClassName)' == ''">%(FileName)</ClassName>
         <Namespace Condition="'%(EmbeddedResource.Namespace)' == ''">$([System.Text.RegularExpressions.Regex]::Replace('%(EmbeddedResource.ManifestResourceName)', '\.[a-zA-Z_][a-zA-Z0-9_]+?$', ''))</Namespace>
@@ -41,11 +20,11 @@
   </Target>
 
   <Target Name="GenerateRestextCodeBehind"
-          DependsOnTargets="_ComputeRestextCodeBehindMetadata"
-          Inputs="@(_RestextFileToGenerateCodeBehind)"
-          Outputs="@(_RestextFileToGenerateCodeBehind -> '%(CodeBehindFile)')">
-    <GenerateRestextCodeBehindFile RestextFile="@(EmbeddedResource)" Condition="'%(Extension)' == '.restext'"
+          DependsOnTargets="_ComputeRestextCodeBehindMetadata">
+    <GenerateRestextCodeBehindFile RestextFile="@(EmbeddedResource)"
+                                   Condition="'%(Extension)' == '.restext' and '%(EmbeddedResource.GenerateCodeBehind)' == 'true'"
                                    Language="$(Language)"
+                                   ManifestResourceName="%(EmbeddedResource.ManifestResourceName)"
                                    CodeBehindFile="%(EmbeddedResource.CodeBehindFile)"
                                    ClassName="%(EmbeddedResource.ClassName)"
                                    Namespace="%(EmbeddedResource.Namespace)"
