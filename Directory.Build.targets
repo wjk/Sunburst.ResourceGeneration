@@ -4,7 +4,14 @@
   </PropertyGroup>
 
   <Target Name="PackProjectReferences" BeforeTargets="_GetPackageFiles" Condition="'$(PackProjectReferences)' == 'true'">
-    <MSBuild Projects="@(ProjectReference)" Properties="IncludeSymbols=$(IncludeSymbols)"
+    <ItemGroup>
+      <ProjectReference Condition="'%(ProjectReference.Pack)' == 'true'">
+        <PackagePath Condition="'%(ProjectReference.PackagePath)' == '' and '$(BuildOutputTargetFolder)' != ''">$(BuildOutputTargetFolder)\$(TargetFramework)</PackagePath>
+        <PackagePath Condition="'%(ProjectReference.PackagePath)' == '' and '$(BuildOutputTargetFolder)' == ''">lib\$(TargetFramework)</PackagePath>
+      </ProjectReference>
+    </ItemGroup>
+
+    <MSBuild Projects="@(ProjectReference)" Properties="IncludeSymbols=$(IncludeSymbols);TargetFramework=$(TargetFramework);_ProjectReferencePackFilePath=%(ProjectReference.PackagePath)"
              Targets="_GetProjectReferencePackFiles" Condition="'%(ProjectReference.Pack)' == 'true'">
       <Output TaskParameter="TargetOutputs" ItemName="_ProjectReferencePackOutput" />
     </MSBuild>
@@ -22,17 +29,12 @@
   </Target>
 
   <Target Name="_GetProjectReferencePackFiles" Returns="@(_ProjectReferencePackFile)" DependsOnTargets="Build">
-    <PropertyGroup>
-      <_ResolvedBuildOutputTargetFolder Condition="'$(BuildOutputTargetFolder)' != ''">$(BuildOutputTargetFolder)</_ResolvedBuildOutputTargetFolder>
-      <_ResolvedBuildOutputTargetFolder Condition="'$(_ResolvedBuildOutputTargetFolder)' == ''">lib/$(TargetFramework)</_ResolvedBuildOutputTargetFolder>
-    </PropertyGroup>
-
     <ItemGroup>
       <_ProjectReferencePackFile Include="$(TargetPath)">
-        <PackagePath>$(_ResolvedBuildOutputTargetFolder)</PackagePath>
+        <PackagePath>$(_ProjectReferencePackFilePath)</PackagePath>
       </_ProjectReferencePackFile>
       <_ProjectReferencePackFile Include="$(TargetDir)$(TargetName).pdb" Condition="'$(IncludeSymbols)' == 'true'">
-        <PackagePath>$(_ResolvedBuildOutputTargetFolder)</PackagePath>
+        <PackagePath>$(_ProjectReferencePackFilePath)</PackagePath>
       </_ProjectReferencePackFile>
 
       <_ProjectReferencePackFile Include="@(Content)" Condition="'%(Content.Pack)' == 'true' and '%(Content.PackagePath)' != ''">
