@@ -11,7 +11,7 @@
     <Authors>William Kent</Authors>
     <Description>Provides compilation of and automatic generation of code-behind files for *.restext resource files (but not *.resx).</Description>
     <Copyright>Copyright © 2018 William Kent. Licensed under the MIT License</Copyright>
-    <PackageLicenseUrl>https://github.com/SunburstApps/ResourceGeneration/blob/master/LICENSE.md</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/SunburstApps/ResourceGeneration</PackageProjectUrl>
     <PackageTags>resource;restext;code-generation</PackageTags>
     <Version>$(AssemblyVersion)</Version>
