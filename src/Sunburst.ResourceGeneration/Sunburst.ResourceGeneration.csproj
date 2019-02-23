@@ -3,6 +3,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <BuildOutputTargetFolder>build</BuildOutputTargetFolder>
     <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+    <PackProjectReferences>true</PackProjectReferences>
 
     <AssemblyTitle>Restext Automatic Resource Generator</AssemblyTitle>
     <Title>$(AssemblyTitle)</Title>
@@ -20,5 +21,9 @@
     <PackageReference Include="Microsoft.Build.Framework" Version="15.5.180" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Build.Utilities.Core" Version="15.5.180" PrivateAssets="all" />
     <Content Include="Sunburst.ResourceGeneration.targets" PackagePath="build" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Sunburst.ResourceGeneration.ResxFormat\Sunburst.ResourceGeneration.ResxFormat.csproj" Pack="true" />
   </ItemGroup>
 </Project>
