@@ -27,7 +27,10 @@ with the `GenerateCodeBehind` metadata, like this:
 
 This will instruct MSBuild to write the strongly-typed code behind files
 into the IntermediateOutputPath during build. The files should be picked up
-by Visual Studio automatically, for use while writing code.
+by Visual Studio automatically, for use while writing code. Note that if there
+is already a strongly-typed code behind created by Visual Studio (it usually ends
+in `.Designer.cs`), you will need to delete it first, or you will see
+double-definition errors.
 
 ## Restext File Format
 
