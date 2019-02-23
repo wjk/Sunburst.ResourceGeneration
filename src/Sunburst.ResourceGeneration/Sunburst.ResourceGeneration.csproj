@@ -23,8 +23,4 @@
     <Content Include="Sunburst.ResourceGeneration.props" PackagePath="build" />
     <Content Include="Sunburst.ResourceGeneration.targets" PackagePath="build" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Sunburst.ResourceGeneration.ResxFormat\Sunburst.ResourceGeneration.ResxFormat.csproj" Pack="true" />
-  </ItemGroup>
 </Project>
