@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- This is required to prevent a NU1605 error. -->
+    <PackageReference Include="Microsoft.NETCore.Platforms" Version="3.0.0-preview4.19123.2" />
+    
+    <PackageReference Include="System.Drawing.Common" Version="4.6.0-*" />
+    <PackageReference Include="Sunburst.ResourceGeneration" Version="3.0.0" PrivateAssets="all" />
+    <EmbeddedResource Update="Resources.resx" GenerateCodeBehind="true">
+      <Generator>MSBuild:PrepareResources</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>
