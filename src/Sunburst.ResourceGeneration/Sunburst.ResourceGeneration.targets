@@ -25,7 +25,6 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <UsingTask TaskName="ComputeRestextCodeBehindFilePath" AssemblyFile="$(ResourceGenerationTasksAssembly)" />
   <UsingTask TaskName="GenerateRestextCodeBehindFile" AssemblyFile="$(ResourceGenerationTasksAssembly)" />
 
   <Target Name="_ComputeRestextCodeBehindMetadata" DependsOnTargets="PrepareForBuild;CreateManifestResourceNames">
@@ -42,7 +41,7 @@
   </Target>
 
   <Target Name="GenerateRestextCodeBehind"
-          DependsOnTargets="_ComputeRestextCodeBehindFilePaths"
+          DependsOnTargets="_ComputeRestextCodeBehindMetadata"
           Inputs="@(_RestextFileToGenerateCodeBehind)"
           Outputs="@(_RestextFileToGenerateCodeBehind -> '%(CodeBehindFile)')">
     <GenerateRestextCodeBehindFile RestextFile="@(EmbeddedResource)" Condition="'%(Extension)' == '.restext'"
