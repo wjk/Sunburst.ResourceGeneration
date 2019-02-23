@@ -33,9 +33,22 @@
     </GenerateRestextCodeBehindFile>
   </Target>
 
+  <Target Name="_AutoSetResGenMetadata" DependsOnTargets="PrepareForBuild;PrepareResourceNames" BeforeTargets="CoreResGen">
+    <Error Message="DefaultLanguageSourceExtension not defined" Condition="'$(DefaultLanguageSourceExtension)' == ''" />
+    <ItemGroup>
+      <EmbeddedResource Update="@(EmbeddedResource)" Condition="'%(EmbeddedResource.GenerateCodeBehind)' == 'true' or '%(EmbeddedResource.Generator)' == 'MSBuild:PrepareResources'">
+        <StronglyTypedClassName Condition="'%(EmbeddedResource.StronglyTypedClassName)' == ''">%(FileName)</StronglyTypedClassName>
+        <StronglyTypedFileName>$(IntermediateOutputPath)%(EmbeddedResource.ManifestResourceName)$(DefaultLanguageSourceExtension)</StronglyTypedFileName>
+        <StronglyTypedLanguage>$(Language)</StronglyTypedLanguage>
+        <StronglyTypedNamespace Condition="'%(EmbeddedResource.StronglyTypedNamespace)' == ''">$([System.Text.RegularExpressions.Regex]::Replace('%(EmbeddedResource.ManifestResourceName)', '\.[a-zA-Z_][a-zA-Z0-9_]+?$', ''))</StronglyTypedNamespace>
+      </EmbeddedResource>
+    </ItemGroup>
+  </Target>
+
   <PropertyGroup>
     <CoreCompileDependsOn>
       GenerateRestextCodeBehind;
+      PrepareResources;
       $(CoreCompileDependsOn)
     </CoreCompileDependsOn>
   </PropertyGroup>

@@ -23,4 +23,10 @@
       <GenerateCodeBehind Condition="'%(EmbeddedResource.GenerateCodeBehind)' == ''">false</GenerateCodeBehind>
     </EmbeddedResource>
   </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="@(EmbeddedResource)">
+      <Generator Condition="'%(EmbeddedResource.GenerateCodeBehind)' == 'true' and '%(Extension)' == '.resx'">MSBuild:PrepareResources</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>
