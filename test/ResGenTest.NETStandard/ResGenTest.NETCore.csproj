@@ -6,5 +6,6 @@
 
   <ItemGroup>
     <PackageReference Include="Sunburst.ResourceGeneration" Version="3.0.0" PrivateAssets="all" />
+    <EmbeddedResource Update="Sample.restext" GenerateCodeBehind="true" />
   </ItemGroup>
 </Project>
