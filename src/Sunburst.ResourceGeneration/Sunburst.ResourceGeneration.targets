@@ -36,7 +36,7 @@
   <Target Name="_AutoSetResGenMetadata" DependsOnTargets="PrepareForBuild;PrepareResourceNames" BeforeTargets="CoreResGen">
     <Error Message="DefaultLanguageSourceExtension not defined" Condition="'$(DefaultLanguageSourceExtension)' == ''" />
     <ItemGroup>
-      <EmbeddedResource Update="@(EmbeddedResource)" Condition="'%(EmbeddedResource.GenerateCodeBehind)' == 'true' or '%(EmbeddedResource.Generator)' == 'MSBuild:PrepareResources'">
+      <EmbeddedResource Update="@(EmbeddedResource)" Condition="('%(EmbeddedResource.GenerateCodeBehind)' == 'true' and '%(Extension)' == '.resx') or '%(EmbeddedResource.Generator)' == 'MSBuild:PrepareResources'">
         <StronglyTypedClassName Condition="'%(EmbeddedResource.StronglyTypedClassName)' == ''">%(FileName)</StronglyTypedClassName>
         <StronglyTypedFileName>$(IntermediateOutputPath)%(EmbeddedResource.ManifestResourceName)$(DefaultLanguageSourceExtension)</StronglyTypedFileName>
         <StronglyTypedLanguage>$(Language)</StronglyTypedLanguage>
