@@ -1,6 +1,5 @@
 <Project>
   <PropertyGroup>
-    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <ResourceGenerationTasksAssembly>$(MSBuildThisFileDirectory)/netstandard2.0/Sunburst.ResourceGeneration.dll</ResourceGenerationTasksAssembly>
   </PropertyGroup>
 

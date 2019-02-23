@@ -1,6 +1,5 @@
 <Project>
   <PropertyGroup>
-    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <EnableDefaultRestextItems Condition="'$(EnableDefaultRestextItems)' == ''">true</EnableDefaultRestextItems>
   </PropertyGroup>
 
