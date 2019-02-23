@@ -23,7 +23,7 @@ namespace System.Resources {
     ///     with null.
     /// </devdoc>
     [Serializable]
-    internal sealed class ResXNullRef {
+    public sealed class ResXNullRef {
     }
 }
 

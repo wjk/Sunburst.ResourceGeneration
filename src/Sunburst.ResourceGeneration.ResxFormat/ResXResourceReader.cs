@@ -26,7 +26,7 @@ namespace System.Resources {
     /// <devdoc>
     ///     ResX resource reader.
     /// </devdoc>
-    internal class ResXResourceReader : IResourceReader {
+    public class ResXResourceReader : IResourceReader {
         string fileName = null;
         TextReader reader = null;
         Stream stream = null;

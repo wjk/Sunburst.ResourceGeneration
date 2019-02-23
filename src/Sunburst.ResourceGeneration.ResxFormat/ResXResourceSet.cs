@@ -21,7 +21,7 @@ namespace System.Resources {
     /// <devdoc>
     ///     ResX resource set.
     /// </devdoc>
-    internal class ResXResourceSet : ResourceSet {
+    public class ResXResourceSet : ResourceSet {
 
         /// <include file='doc\ResXResourceSet.uex' path='docs/doc[@for="ResXResourceSet.ResXResourceSet"]/*' />
         /// <devdoc>

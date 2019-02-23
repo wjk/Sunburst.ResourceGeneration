@@ -31,7 +31,7 @@ namespace System.Resources {
     ///    
     /// </devdoc>
     [Serializable]
-    internal sealed class ResXDataNode : ISerializable {
+    public sealed class ResXDataNode : ISerializable {
 
         private static readonly char[] SpecialChars = new char[] {' ', '\r', '\n'};
 

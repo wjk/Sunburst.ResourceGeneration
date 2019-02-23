@@ -24,7 +24,7 @@ namespace System.Resources {
     ///     ResX resource writer. See the text in "ResourceSchema" for more 
     ///     information.
     /// </devdoc>
-    internal class ResXResourceWriter : IResourceWriter {
+    public class ResXResourceWriter : IResourceWriter {
         internal const string TypeStr = "type";
         internal const string NameStr = "name";
         internal const string DataStr = "data";

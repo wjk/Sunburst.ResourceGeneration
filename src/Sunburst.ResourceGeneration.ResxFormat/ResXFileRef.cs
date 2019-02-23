@@ -28,7 +28,7 @@ namespace System.Resources {
     ///     for the value of the resource item, the external resource is loaded.
     /// </devdoc>
     [TypeConverterAttribute(typeof(ResXFileRef.Converter)), Serializable]
-    internal class ResXFileRef {
+    public class ResXFileRef {
         private string fileName;
         private string typeName;
         [OptionalField(VersionAdded = 2)]
