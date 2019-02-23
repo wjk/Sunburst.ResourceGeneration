@@ -1,24 +1,33 @@
 # Restext Automatic Resource Generator
 
 This repository contains the source code for a NuGet package that automatically
-parses and generates strongly-typed code behinds for `*.restext` files that
-contain string-based resources. It also automatically includes them in the
-build so they are compiled into binary `*.resources` files (the same as with
-resx files). Note that `*.restext` files can contain strings only.
+parses and generates strongly-typed code behind files for `*.restext` files that
+contain string-based resources. It can also create strongly-typed code behind files
+for `*.resx` files. It also automatically includes them in the build so that they are
+compiled into binary `*.resources` files. Note that `*.restext` files can contain strings only.
 
 ## Using This Package
 
 To use this package, add this text to your csproj file:
 ```xml
 <ItemGroup>
-  <PackageReference Include="Sunburst.ResourceGeneration" Version="1.0.0" />
+  <PackageReference Include="Sunburst.ResourceGeneration" Version="3.0.0" />
 </ItemGroup>
 ```
 
-Note that this technique requires Visual Studio 2017 or Visual Studio for Mac;
-if you are using an older version of Visual Studio, you will need to
-search for **Sunburst.ResourceGeneration** in your IDE and have it add the
-package to your csproj instead.
+Then, mark the resource files that you want to have code-behinds generated for
+with the `GenerateCodeBehind` metadata, like this:
+
+```xml
+<ItemGroup>
+  <EmbeddedResource Include="Resources.resx" GenerateCodeBehind="true" />
+  <EmbeddedResource Include="MoreResources.restext" GenerateCodeBehind="true" />
+</ItemGroup>
+```
+
+This will instruct MSBuild to write the strongly-typed code behind files
+into the IntermediateOutputPath during build. The files should be picked up
+by Visual Studio automatically, for use while writing code.
 
 ## Restext File Format
 
