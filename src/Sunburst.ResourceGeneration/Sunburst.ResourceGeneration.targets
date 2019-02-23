@@ -12,7 +12,7 @@
 
     <EmbeddedResource Include="@(Restext)">
       <Type>Resx</Type>
-      <Generator>MSBuild:CompileRestextCodeBehind</Generator>
+      <Generator>MSBuild:GenerateRestextCodeBehind</Generator>
     </EmbeddedResource>
     <None Remove="@(Restext)" />
   </ItemGroup>
@@ -21,42 +21,44 @@
     <None Remove="**/*.restext" Condition="'$(EnableDefaultNoneItems)' == 'true'" />
     <EmbeddedResource Include="**/*.restext" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder)">
       <Type>Resx</Type>
-      <Generator>MSBuild:CompileRestextCodeBehind</Generator>
+      <Generator>MSBuild:GenerateRestextCodeBehind</Generator>
     </EmbeddedResource>
   </ItemGroup>
 
   <UsingTask TaskName="ComputeRestextCodeBehindFilePath" AssemblyFile="$(ResourceGenerationTasksAssembly)" />
   <UsingTask TaskName="GenerateRestextCodeBehindFile" AssemblyFile="$(ResourceGenerationTasksAssembly)" />
 
-  <Target Name="_ComputeRestextCodeBehindFilePaths" DependsOnTargets="CreateManifestResourceNames">
-    <ComputeRestextCodeBehindFilePath EmbeddedResources="@(EmbeddedResource)"
-                                      IntermediateOutputPath="$(IntermediateOutputPath)"
-                                      Language="$(Language)"
-                                      AutoGenerateByDefault="$(AutoGenerateRestextCodeBehindFiles)">
-      <Output TaskParameter="RestextFilesWithCodeBehindPath" ItemName="_RestextFileToGenerateCodeBehind" />
-    </ComputeRestextCodeBehindFilePath>
+  <Target Name="_ComputeRestextCodeBehindMetadata" DependsOnTargets="PrepareForBuild;CreateManifestResourceNames">
+    <Error Message="DefaultLanguageSourceExtension not defined" Condition="'$(DefaultLanguageSourceExtension)' == ''" />
+
+    <ItemGroup>
+      <EmbeddedResource Update="@(EmbeddedResource)" Condition="'%(Extension)' == '.restext' and '%(GenerateCodeBehind)' == 'true'">
+        <CodeBehindFile>$(IntermediateOutputPath)%(EmbeddedResource.ManifestResourceName)$(DefaultLanguageSourceExtension)</CodeBehindFile>
+        <ClassName Condition="'%(EmbeddedResource.ClassName)' == ''">%(FileName)</ClassName>
+        <Namespace Condition="'%(EmbeddedResource.Namespace)' == ''">$([System.Text.RegularExpressions.Regex]::Replace('%(EmbeddedResource.ManifestResourceName)', '\.[a-zA-Z_][a-zA-Z0-9_]+?$', ''))</Namespace>
+        <Visibility Condition="'%(EmbeddedResource.Visibility)' == ''">internal</Visibility>
+      </EmbeddedResource>
+    </ItemGroup>
   </Target>
 
   <Target Name="GenerateRestextCodeBehind"
-          Condition="'$(DesignTimeBuild)' == ''"
-          DependsOnTargets="_ComputeRestextCodeBehindFilePaths;CreateManifestResourceNames"
+          DependsOnTargets="_ComputeRestextCodeBehindFilePaths"
           Inputs="@(_RestextFileToGenerateCodeBehind)"
           Outputs="@(_RestextFileToGenerateCodeBehind -> '%(CodeBehindFile)')">
-    <GenerateRestextCodeBehindFile RestextFiles="@(_RestextFileToGenerateCodeBehind)" Language="$(Language)" Visibility="$(RestextCodeBehindVisibility)">
+    <GenerateRestextCodeBehindFile RestextFile="@(EmbeddedResource)" Condition="'%(Extension)' == '.restext'"
+                                   Language="$(Language)"
+                                   CodeBehindFile="%(EmbeddedResource.CodeBehindFile)"
+                                   ClassName="%(EmbeddedResource.ClassName)"
+                                   Namespace="%(EmbeddedResource.Namespace)"
+                                   Visibility="%(EmbeddedResource.Visibility)">
+      <Output TaskParameter="Compile" ItemName="Compile" />
       <Output TaskParameter="Compile" ItemName="FileWrites" />
     </GenerateRestextCodeBehindFile>
   </Target>
 
-  <Target Name="CompileRestextCodeBehind"
-          DependsOnTargets="_ComputeRestextCodeBehindFilePaths;GenerateRestextCodeBehind">
-    <ItemGroup>
-      <Compile Include="@(_RestextFileToGenerateCodeBehind -> '%(CodeBehindFile)')" />
-    </ItemGroup>
-  </Target>
-
   <PropertyGroup>
     <CoreCompileDependsOn>
-      CompileRestextCodeBehind;
+      GenerateRestextCodeBehind;
       $(CoreCompileDependsOn)
     </CoreCompileDependsOn>
   </PropertyGroup>

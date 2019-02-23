@@ -11,16 +11,28 @@ namespace Sunburst.ResourceGeneration
     public class GenerateRestextCodeBehindFile : TaskBase
     {
         [Required]
-        public ITaskItem[] RestextFiles { get; set; }
+        public ITaskItem RestextFile { get; set; }
+
+        [Required]
+        public ITaskItem CodeBehindFile { get; set; }
+
+        [Required]
+        public string ManifestResourceName { get; set; }
 
         [Required]
         public string Language { get; set; }
 
-        [Output]
-        public ITaskItem[] Compile { get; set; }
+        [Required]
+        public string ClassName { get; set; }
+
+        [Required]
+        public string Namespace { get; set; }
 
         [Required]
         public string Visibility { get; set; }
+
+        [Output]
+        public ITaskItem Compile { get; set; }
 
         private static List<(string key, string comment)> ParseRestextFile(TextReader reader)
         {
@@ -72,10 +84,6 @@ namespace Sunburst.ResourceGeneration
 
         protected override void ExecuteCore()
         {
-            // The algorithm used by this class is mostly borrowed from:
-            // https://github.com/dotnet/roslyn-tools/blob/master/sdks/RepoToolset/tools/GenerateResxSource.csx,
-            // heavily modified for readability.
-
             bool internalMembers;
             if (Visibility.Equals("Public", StringComparison.OrdinalIgnoreCase))
             {
@@ -90,39 +98,27 @@ namespace Sunburst.ResourceGeneration
                 throw new BuildErrorException("Visibility must be either Public or Internal");
             }
 
-            List<ITaskItem> outputs = new List<ITaskItem>();
-
-            foreach (ITaskItem item in RestextFiles)
+            try
             {
-                string codeBehindPath = item.GetMetadata("CodeBehindFile");
-                if (string.IsNullOrEmpty(codeBehindPath))
-                    throw new BuildErrorException("Item '{0}' does not have CodeBehindFile metadata", item.ItemSpec);
-
-                try
+                if (Language.Equals("C#", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (Language.Equals("C#", StringComparison.OrdinalIgnoreCase))
-                    {
-                        WriteCSharpCodeBehind(item, codeBehindPath, internalMembers);
-                    }
-                    else if (Language.Equals("VB", StringComparison.OrdinalIgnoreCase))
-                    {
-                        WriteVisualBasicCodeBehind(item, codeBehindPath, internalMembers);
-                    }
-                    else
-                    {
-                        throw new BuildErrorException($"Unrecognized language '{Language}'");
-                    }
+                    WriteCSharpCodeBehind(RestextFile, CodeBehindFile.GetMetadata("FullPath"), internalMembers);
                 }
-                catch (InvalidDataException e)
+                else if (Language.Equals("VB", StringComparison.OrdinalIgnoreCase))
                 {
-                    throw new BuildErrorException($"Error parsing file '{item.ItemSpec}': {e.Message}", e);
+                    WriteVisualBasicCodeBehind(RestextFile, CodeBehindFile.GetMetadata("FullPath"), internalMembers);
                 }
-
-                ITaskItem output = new TaskItem(codeBehindPath);
-                outputs.Add(output);
+                else
+                {
+                    throw new BuildErrorException($"Unrecognized language '{Language}'");
+                }
+            }
+            catch (InvalidDataException e)
+            {
+                throw new BuildErrorException($"Error parsing file '{RestextFile.ItemSpec}': {e.Message}", e);
             }
 
-            Compile = outputs.ToArray();
+            Compile = CodeBehindFile;
         }
 
         private void WriteCSharpCodeBehind(ITaskItem resxFile, string codeBehindFile, bool internalMembers)
@@ -134,34 +130,16 @@ namespace Sunburst.ResourceGeneration
             builder.AppendLine("using System.Reflection;");
             builder.AppendLine();
 
-            string resourceName = resxFile.GetMetadata("ManifestResourceName");
-            string[] nameParts = resourceName.Split('.');
-            string namespaceName, className, classIndent;
-            if (nameParts.Length > 1)
-            {
-                namespaceName = string.Join(".", nameParts, 0, nameParts.Length - 1);
-                className = nameParts.Last();
-                classIndent = "    ";
-            }
-            else
-            {
-                namespaceName = null;
-                className = nameParts[0];
-                classIndent = "";
-            }
+            const string classIndent = "    ";
+            const string memberIndent = classIndent + "    ";
 
-            string memberIndent = classIndent + "    ";
+            builder.AppendLine($"namespace {Namespace}");
+            builder.AppendLine("{");
 
-            if (namespaceName != null)
-            {
-                builder.AppendLine($"namespace {namespaceName}");
-                builder.AppendLine("{");
-            }
-
-            builder.AppendLine($"{classIndent}{visibility} static class {className}");
+            builder.AppendLine($"{classIndent}{visibility} static class {ClassName}");
             builder.AppendLine($"{classIndent}{{");
 
-            builder.AppendLine($"{memberIndent}{visibility} static global::System.Resources.ResourceManager ResourceManager {{ get; }} = new global::System.Resources.ResourceManager(\"{resourceName}\", typeof({className}).GetTypeInfo().Assembly);");
+            builder.AppendLine($"{memberIndent}{visibility} static global::System.Resources.ResourceManager ResourceManager {{ get; }} = new global::System.Resources.ResourceManager(\"{ManifestResourceName}\", typeof({ClassName}).Assembly);");
             builder.AppendLine();
 
             List<(string key, string comment)> restextContent;
@@ -184,9 +162,7 @@ namespace Sunburst.ResourceGeneration
             }
 
             builder.AppendLine($"{classIndent}}}");
-
-            if (namespaceName != null)
-                builder.AppendLine("}");
+            builder.AppendLine("}");
 
             File.WriteAllText(codeBehindFile, builder.ToString());
         }
@@ -200,33 +176,16 @@ namespace Sunburst.ResourceGeneration
             builder.AppendLine("Imports System.Reflection");
             builder.AppendLine();
 
-            string resourceName = resxFile.GetMetadata("ManifestResourceName");
-            string[] nameParts = resourceName.Split('.');
-            string namespaceName, className, classIndent;
-            if (nameParts.Length > 1)
-            {
-                namespaceName = string.Join(".", nameParts, 0, nameParts.Length - 1);
-                className = nameParts.Last();
-                classIndent = "    ";
-            }
-            else
-            {
-                namespaceName = null;
-                className = nameParts[0];
-                classIndent = "";
-            }
+            const string classIndent = "    ";
+            const string memberIndent = classIndent + "    ";
 
-            string memberIndent = classIndent + "    ";
-
-            if (namespaceName != null)
-                builder.AppendLine($"Namespace {namespaceName}");
-
-            builder.AppendLine($"{classIndent}{visibility} Class {className}");
+            builder.AppendLine($"Namespace {Namespace}");
+            builder.AppendLine($"{classIndent}{visibility} Class {ClassName}");
             builder.AppendLine($"{memberIndent}Private Sub New()");
             builder.AppendLine($"{memberIndent}End Sub");
             builder.AppendLine();
 
-            builder.AppendLine($"{memberIndent}{visibility} Shared ReadOnly Property ResourceManager As New Global.System.Resources.ResourceManager ResourceManager(\"{resourceName}\", GetType({className}).GetTypeInfo().Assembly);");
+            builder.AppendLine($"{memberIndent}{visibility} Shared ReadOnly Property ResourceManager As New Global.System.Resources.ResourceManager ResourceManager(\"{ManifestResourceName}\", GetType({ClassName}).GetTypeInfo().Assembly);");
             builder.AppendLine();
 
             List<(string key, string comment)> restextContent;
@@ -254,9 +213,7 @@ namespace Sunburst.ResourceGeneration
             }
 
             builder.Append($"{classIndent}End Class");
-
-            if (namespaceName != null)
-                builder.AppendLine("End Namespace");
+            builder.AppendLine("End Namespace");
 
             File.WriteAllText(codeBehindFile, builder.ToString());
         }
