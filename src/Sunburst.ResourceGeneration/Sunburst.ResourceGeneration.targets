@@ -1,6 +1,7 @@
 <Project>
   <PropertyGroup>
     <ResourceGenerationTasksAssembly>$(MSBuildThisFileDirectory)/netstandard2.0/Sunburst.ResourceGeneration.dll</ResourceGenerationTasksAssembly>
+    <CreateManifestResourceNamesDependsOn>AssignTargetPaths;SplitResourcesByCulture;$(CreateManifestResourceNamesDependsOn)</CreateManifestResourceNamesDependsOn>
   </PropertyGroup>
 
   <UsingTask TaskName="GenerateRestextCodeBehindFile" AssemblyFile="$(ResourceGenerationTasksAssembly)" />
