@@ -11,7 +11,7 @@ compiled into binary `*.resources` files. Note that `*.restext` files can contai
 To use this package, add this text to your csproj file:
 ```xml
 <ItemGroup>
-  <PackageReference Include="Sunburst.ResourceGeneration" Version="3.0.0" />
+  <PackageReference Include="Sunburst.ResourceGeneration" Version="3.0.1" PrivateAssets="all" />
 </ItemGroup>
 ```
 
