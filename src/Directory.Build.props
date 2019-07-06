@@ -1,8 +1,4 @@
-<Project>
-  <PropertyGroup>
-    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
-  </PropertyGroup>
-
+﻿<Project>
   <PropertyGroup>
     <AssemblyTitle Condition="'$(AssemblyTitle)' == '' and '$(TargetName)' != ''">$(TargetName)</AssemblyTitle>
     <Description Condition="'$(Description)' == '' and '$(AssemblyTitle)' != ''">$(AssemblyTitle)</Description>

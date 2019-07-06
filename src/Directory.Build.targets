@@ -1,8 +1,4 @@
-<Project>
-  <PropertyGroup>
-    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
-  </PropertyGroup>
-
+﻿<Project>
   <Target Name="PackProjectReferences" BeforeTargets="_GetPackageFiles" Condition="'$(PackProjectReferences)' == 'true'">
     <ItemGroup>
       <ProjectReference Condition="'%(ProjectReference.Pack)' == 'true'">
