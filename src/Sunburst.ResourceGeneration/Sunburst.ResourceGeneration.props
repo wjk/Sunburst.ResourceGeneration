@@ -1,19 +1,7 @@
-<Project>
+﻿<Project>
   <PropertyGroup>
     <EnableDefaultRestextItems Condition="'$(EnableDefaultRestextItems)' == ''">true</EnableDefaultRestextItems>
   </PropertyGroup>
-
-  <ItemGroup>
-    <AvailableItemName Include="Restext" />
-
-    <EmbeddedResource Include="@(Restext)">
-      <Type>Resx</Type>
-      <Generator>MSBuild:GenerateRestextCodeBehind</Generator>
-      <GenerateCodeBehind Condition="'%(Restext.GenerateCodeBehind)' != ''">%(Restext.GenerateCodeBehind)</GenerateCodeBehind>
-      <GenerateCodeBehind Condition="'%(Restext.GenerateCodeBehind)' == ''">false</GenerateCodeBehind>
-    </EmbeddedResource>
-    <None Remove="@(Restext)" />
-  </ItemGroup>
 
   <ItemGroup Condition="'$(EnableDefaultItems)' == 'true' and '$(EnableDefaultRestextItems)' == 'true'">
     <None Remove="**/*.restext" Condition="'$(EnableDefaultNoneItems)' == 'true'" />
