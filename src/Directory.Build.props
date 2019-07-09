@@ -7,7 +7,7 @@
     <Copyright>Copyright © 2018-2019 William Kent. All rights reserved.</Copyright>
     <Product>Sunburst Windows Forms Common GUI Libraries</Product>
 
-    <AssemblyVersion Condition="'$(AssemblyVersion)' == ''">4.0.0</AssemblyVersion>
+    <AssemblyVersion Condition="'$(AssemblyVersion)' == ''">3.0.1</AssemblyVersion>
     <FileVersion Condition="'$(FileVersion)' == '' and '$(Version)' != ''">$(Version)</FileVersion>
   </PropertyGroup>
 </Project>
