@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="4.6.0-*" />
-    <PackageReference Include="Sunburst.ResourceGeneration" Version="3.0.1" PrivateAssets="all" />
+    <PackageReference Include="Sunburst.ResourceGeneration" Version="4.0.0" PrivateAssets="all" />
     <EmbeddedResource Update="Resources.resx" GenerateCodeBehind="true" />
   </ItemGroup>
 </Project>
